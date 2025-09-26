@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: alumniconnect-frontend
+    env: static
+    buildCommand: npm ci && npm run build
+    staticPublishPath: ./dist
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: VITE_API_BASE_URL
+        value: https://alumniconnect-k2y2.onrender.com
+      - key: VITE_APP_NAME
+        value: AlumniConnect Admin Dashboard
+      - key: VITE_APP_VERSION
+        value: 1.0.0
+      - key: VITE_ENABLE_MOCK_API
+        value: false
