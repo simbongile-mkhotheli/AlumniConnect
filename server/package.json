@@ -6,13 +6,13 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "start": "node dist/index.js",
-    "build": "npm run prisma:generate && ./node_modules/.bin/tsc -p . --skipLibCheck",
+    "build": "npm run prisma:generate && tsc",
     "postinstall": "npm run prisma:generate",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate deploy",
     "prisma:dev": "prisma migrate dev",
     "prisma:studio": "prisma studio",
-    "db:seed": "tsx prisma/seed.ts",
+    "db:seed": "tsx scripts/seed.ts",
     "deploy": "npm run build && npm run prisma:migrate && npm run start"
   },
   "dependencies": {
