@@ -1,7 +1,8 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
-import { promises as fs } from 'fs';
-import * as path from 'path';
+
+const fs = require('fs').promises;
+const path = require('path');
 
 const prisma = new PrismaClient();
 
