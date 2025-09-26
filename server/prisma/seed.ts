@@ -1,13 +1,7 @@
 import 'dotenv/config';
 import { PrismaClient } from '@prisma/client';
-
-// Node.js globals declarations
-declare const require: any;
-declare const process: any;
-declare const console: any;
-
-const fs = require('fs').promises;
-const path = require('path');
+import { promises as fs } from 'fs';
+import path from 'path';
 
 const prisma = new PrismaClient();
 

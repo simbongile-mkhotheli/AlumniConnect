@@ -2,10 +2,6 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import { prisma } from './prisma';
-
-// Node.js globals declarations
-declare const process: any;
-declare const console: any;
 import { eventsRouter } from './routes/events';
 import { chaptersRouter } from './routes/chapters';
 import { sponsorsRouter } from './routes/sponsors';
