@@ -1,23 +1,29 @@
 #!/bin/bash
 
-# Build script for Render deployment
+# Frontend build script for Render deployment
 
-echo "Starting build process..."
+echo "=== Starting Frontend Build Process ==="
 
-# Install dependencies for the main project
-echo "Installing frontend dependencies..."
-npm ci
+# Check environment
+echo "Current directory: $(pwd)"
+echo "Node version: $(node --version)"
+echo "NPM version: $(npm --version)"
 
-# Install dependencies for the server
-echo "Installing server dependencies..."
-cd server
-npm ci
+# List files
+echo "Files in current directory:"
+ls -la
 
-# Generate Prisma client
-echo "Generating Prisma client..."
-npm run prisma:generate
+# Install dependencies
+echo "=== Installing Dependencies ==="
+npm install
 
-# Build the server
+# Verify installation
+echo "=== Verifying Installation ==="
+ls -la node_modules/.bin/
+
+# Build the application
+echo "=== Building Application ==="
+npx vite build
 echo "Building server..."
 npm run build
 
