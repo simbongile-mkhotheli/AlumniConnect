@@ -18,8 +18,9 @@ services:
         value: 4000
 
   # Frontend Static Site
-  - type: static
+  - type: web
     name: alumniconnect-frontend
+    env: static
     buildCommand: npm ci && npm run build
     staticPublishPath: ./dist
     envVars:
