@@ -43,9 +43,12 @@ class ApiServiceClass {
   private client: AxiosInstance;
 
   constructor() {
+    // Determine normalized base URL. We expect backend endpoints to live under /api.
+    // If user configured VITE_API_BASE_URL without the trailing /api (e.g. https://service.onrender.com)
+    // we'll still mount requests under /api by rewriting request URLs below.
+    const configuredBase = import.meta.env.VITE_API_BASE_URL || '/api';
     this.client = axios.create({
-      // Prefer configured API base; otherwise fall back to same-origin '/api'
-      baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
+      baseURL: configuredBase,
       timeout: 10000,
       headers: {
         'Content-Type': 'application/json',
@@ -73,6 +76,20 @@ class ApiServiceClass {
           );
         }
 
+        // If backend mounts everything under /api but the configured base URL does NOT include /api
+        // (e.g. baseURL = https://service.onrender.com) and the request path starts with a single '/'
+        // we prefix '/api' to avoid 404s like /events -> /api/events.
+        try {
+          const baseHasApi = /\/api\/?$/.test(this.client.defaults.baseURL || '');
+          if (!baseHasApi && typeof config.url === 'string') {
+            // Only rewrite root-relative (starts with '/') but not already '/api/...'
+            if (config.url.startsWith('/') && !config.url.startsWith('/api/')) {
+              config.url = `/api${config.url}`;
+            }
+          }
+        } catch (e) {
+          // Fail silent – never block the request
+        }
         return config;
       },
       (error: AxiosError) => {
