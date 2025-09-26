@@ -1,0 +1,86 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Dependencies
+node_modules
+
+# Build outputs
+dist
+dist-ssr
+build
+
+# Environment variables
+*.local
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Testing
+coverage/
+test-results/
+
+# Cache directories
+.eslintcache
+.prettierignore
+
+# OS generated files
+Thumbs.db
+
+# Debug and temporary files
+debug-*.html
+test-*.cjs
+test-*.js
+fix-*.cjs
+verify-*.cjs
+*-test.cjs
+*-fix.cjs
+*-summary.cjs
+simple-test.cjs
+realistic-data-summary.cjs
+final-verification.cjs
+auth-manager.html
+filter-debug.html
+build-log.txt
+debug-empty-data.js
+nul
+
+# Mock server (deprecated)
+mock-server/
+
+# Scripts for testing/debugging
+scripts/migration-helpers.ts
+
+# Documentation and markdown files (keep only README.md)
+docs/
+*.md
+!README.md
+CONTRIBUTING.md
+*_COMPLETE.md
+*_PROGRESS.md
+*_PLAN.md
+CHAPTER_*.md
+EVENT_*.md
+FEATURE_*.md
+FILTER_*.md
+MEMBER_*.md
+PHASE*.md
+PROFILE*.md
+SERVICES_*.md
+TYPES_*.md

@@ -1,0 +1,629 @@
+/* Modal Overlay - Ensure it appears above everything */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999; /* Very high z-index to appear above everything */
+  padding: 20px;
+  backdrop-filter: blur(4px);
+}
+
+.modal-content {
+  position: relative;
+  z-index: 10000; /* Even higher than overlay */
+  width: 100%;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+/* Event Details Modal Styles */
+.event-details-modal {
+  max-width: 800px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow:
+    0 20px 25px -5px rgba(0, 0, 0, 0.1),
+    0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.event-details-modal .modal-header {
+  padding: 24px 24px 16px;
+  border-bottom: 1px solid #f1f3f4;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.event-details-modal .modal-title-section {
+  flex: 1;
+  margin-right: 16px;
+}
+
+.event-details-modal .modal-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a202c;
+  margin: 0 0 8px 0;
+  line-height: 1.3;
+}
+
+.event-details-modal .event-meta {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.event-details-modal .status-badge {
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.event-details-modal .status-badge.success {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.event-details-modal .status-badge.warning {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.event-details-modal .status-badge.info {
+  background: #dbeafe;
+  color: #1e40af;
+}
+
+.event-details-modal .status-badge.error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.event-details-modal .featured-badge {
+  background: linear-gradient(135deg, #f59e0b, #d97706);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 500;
+}
+
+.event-details-modal .modal-close {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.event-details-modal .modal-close:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+/* Event Cover Image */
+.event-details-modal .event-cover {
+  width: 100%;
+  height: 200px;
+  overflow: hidden;
+  background: #f7fafc;
+}
+
+.event-details-modal .event-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Modal Body */
+.event-details-modal .modal-body {
+  padding: 24px;
+}
+
+/* Key Information Grid */
+.event-key-info {
+  margin-bottom: 32px;
+}
+
+.event-key-info .info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.event-key-info .info-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 16px;
+  background: #f7fafc;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+}
+
+.event-key-info .info-icon {
+  font-size: 20px;
+  margin-top: 2px;
+}
+
+.event-key-info .info-content {
+  flex: 1;
+}
+
+.event-key-info .info-label {
+  font-size: 12px;
+  font-weight: 500;
+  color: #718096;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 4px;
+}
+
+.event-key-info .info-value {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 2px;
+}
+
+.event-key-info .info-detail {
+  font-size: 12px;
+  color: #718096;
+}
+
+/* RSVP Section */
+.event-rsvp-section {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 32px;
+  color: white;
+  text-align: center;
+}
+
+.event-rsvp-section .rsvp-stats {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
+  margin-bottom: 24px;
+}
+
+.event-rsvp-section .rsvp-count,
+.event-rsvp-section .attendance-count {
+  text-align: center;
+}
+
+.event-rsvp-section .count-number {
+  display: block;
+  font-size: 32px;
+  font-weight: 700;
+  line-height: 1;
+  margin-bottom: 4px;
+}
+
+.event-rsvp-section .count-label {
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.event-rsvp-section .rsvp-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.event-rsvp-section .btn-large {
+  padding: 12px 32px;
+  font-size: 16px;
+  font-weight: 600;
+  min-width: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.event-rsvp-section .rsvp-confirmation,
+.event-rsvp-section .rsvp-pending {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  opacity: 0.9;
+}
+
+.event-rsvp-section .confirmation-icon {
+  background: rgba(16, 185, 129, 0.2);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+.event-rsvp-section .pending-icon {
+  background: rgba(245, 158, 11, 0.2);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+}
+
+/* Description */
+.event-description {
+  margin-bottom: 32px;
+}
+
+.event-description h3 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 16px;
+}
+
+.event-description .event-excerpt {
+  font-size: 16px;
+  font-weight: 500;
+  color: #4a5568;
+  margin-bottom: 16px;
+  padding: 16px;
+  background: #f7fafc;
+  border-radius: 8px;
+  border-left: 4px solid #667eea;
+}
+
+.event-description .event-content p {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #4a5568;
+  margin-bottom: 12px;
+}
+
+.event-description .event-content p:last-child {
+  margin-bottom: 0;
+}
+
+/* Tags */
+.event-tags {
+  margin-bottom: 32px;
+}
+
+.event-tags h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #2d3748;
+  margin-bottom: 12px;
+}
+
+.event-tags .tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.event-tags .tag {
+  background: #edf2f7;
+  color: #4a5568;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+}
+
+/* External RSVP */
+.external-rsvp {
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 32px;
+}
+
+.external-rsvp h4 {
+  font-size: 16px;
+  font-weight: 600;
+  color: #c53030;
+  margin-bottom: 8px;
+}
+
+.external-rsvp p {
+  font-size: 14px;
+  color: #4a5568;
+  margin-bottom: 12px;
+}
+
+/* Modal Footer */
+.event-details-modal .modal-footer {
+  padding: 16px 24px 24px;
+  border-top: 1px solid #f1f3f4;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.event-details-modal .event-sharing {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 14px;
+  color: #718096;
+}
+
+.event-details-modal .share-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.event-details-modal .share-btn {
+  background: #f7fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  color: #4a5568;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.event-details-modal .share-btn:hover {
+  background: #edf2f7;
+  border-color: #cbd5e0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .event-details-modal {
+    max-width: 100%;
+    margin: 0;
+  }
+
+  .event-details-modal .modal-header {
+    padding: 16px 16px 12px;
+  }
+
+  .event-details-modal .modal-title {
+    font-size: 20px;
+  }
+
+  .event-details-modal .modal-body {
+    padding: 16px;
+  }
+
+  .event-key-info .info-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .event-key-info .info-item {
+    padding: 12px;
+  }
+
+  .event-rsvp-section {
+    padding: 20px 16px;
+  }
+
+  .event-rsvp-section .rsvp-stats {
+    gap: 20px;
+  }
+
+  .event-rsvp-section .count-number {
+    font-size: 24px;
+  }
+
+  .event-details-modal .modal-footer {
+    padding: 12px 16px 16px;
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .event-details-modal .event-sharing {
+    justify-content: center;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .modal-overlay {
+    background: rgba(0, 0, 0, 0.7);
+  }
+
+  .event-details-modal {
+    background: red;
+    color: #e2e8f0;
+  }
+
+  .event-details-modal .modal-title {
+    color: #f7fafc;
+  }
+
+  .event-details-modal .modal-header {
+    border-bottom-color: #4a5568;
+  }
+
+  .event-details-modal .modal-close {
+    background: #4a5568;
+    border-color: #718096;
+    color: #e2e8f0;
+  }
+
+  .event-details-modal .modal-close:hover {
+    background: #718096;
+  }
+
+  .event-key-info .info-item {
+    background: #4a5568;
+    border-color: #718096;
+  }
+
+  .event-key-info .info-value {
+    color: #f7fafc;
+  }
+
+  .event-description .event-excerpt {
+    background: #4a5568;
+    border-left-color: #667eea;
+  }
+
+  .event-description .event-content p {
+    color: #cbd5e0;
+  }
+
+  .event-tags .tag {
+    background: #4a5568;
+    color: #e2e8f0;
+    border-color: #718096;
+  }
+
+  .external-rsvp {
+    background: #742a2a;
+    border-color: #fc8181;
+  }
+
+  .event-details-modal .modal-footer {
+    border-top-color: #4a5568;
+  }
+
+  .event-details-modal .share-btn {
+    background: #4a5568;
+    border-color: #718096;
+    color: #e2e8f0;
+  }
+
+  .event-details-modal .share-btn:hover {
+    background: #718096;
+  }
+}
+
+/* Animation for modal appearance */
+.event-details-modal {
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Sync indicator styles for events card */
+.sync-indicator {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #10b981;
+  margin-bottom: 4px;
+}
+
+.sync-indicator.offline {
+  background: #f59e0b;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* RSVP status indicators in events card */
+.event-item .rsvp-status {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 8px;
+  min-width: 80px;
+}
+
+/* Button variants for RSVP */
+.btn-danger {
+  background: #dc2626;
+  color: white;
+  border: 1px solid #dc2626;
+}
+
+.btn-danger:hover {
+  background: #b91c1c;
+  border-color: #b91c1c;
+}
+
+.btn-outline.btn-danger {
+  background: transparent;
+  color: #dc2626;
+  border: 1px solid #dc2626;
+}
+
+.btn-outline.btn-danger:hover {
+  background: #dc2626;
+  color: white;
+}
+
+.btn-warning {
+  background: #f59e0b;
+  color: white;
+  border: 1px solid #f59e0b;
+}
+
+.btn-warning:hover {
+  background: #d97706;
+  border-color: #d97706;
+}
+
+/* Ensure modal appears above all other content */
+body.modal-open {
+  overflow: hidden;
+}
+
+/* Additional z-index fixes for common UI elements */
+.modal-overlay {
+  z-index: 999999 !important;
+}
+
+.modal-content {
+  z-index: 1000000 !important;
+}

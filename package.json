@@ -1,0 +1,64 @@
+{
+  "name": "alumni-connect-react",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "test": "vitest",
+    "test:run": "vitest run",
+    "mock:server": "echo Mock server deprecated. Use 'npm run server' instead && exit 1",
+    "server": "npm --prefix server run dev",
+    "server:build": "npm --prefix server run build",
+    "server:migrate": "npm --prefix server run prisma:dev",
+    "server:seed": "npm --prefix server run db:seed",
+    "dev:all": "cross-env VITE_API_BASE_URL=http://localhost:4000/api concurrently \"npm run server\" \"npm run dev\" --names \"api,vite\" --prefix-colors \"blue,green\""
+  },
+  "dependencies": {
+    "@types/axios": "^0.9.36",
+    "@types/node": "^24.3.1",
+    "@types/react-router-dom": "^5.3.3",
+    "axios": "^1.11.0",
+    "react": "^19.1.1",
+    "react-dom": "^19.1.1",
+    "react-router-dom": "^7.8.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.33.0",
+    "@playwright/test": "^1.49.1",
+    "@testing-library/jest-dom": "^6.6.3",
+    "@testing-library/react": "^16.1.0",
+    "@testing-library/user-event": "^14.6.1",
+    "@types/react": "^19.1.10",
+    "@types/react-dom": "^19.1.7",
+    "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/ui": "^3.2.4",
+    "concurrently": "^8.0.0",
+    "cross-env": "^7.0.3",
+    "eslint": "^9.33.0",
+    "eslint-plugin-react-hooks": "^5.2.0",
+    "eslint-plugin-react-refresh": "^0.4.20",
+    "globals": "^16.3.0",
+    "husky": "^9.1.7",
+    "jsdom": "^26.0.0",
+    "lint-staged": "^16.1.6",
+    "prettier": "^3.6.2",
+    "typescript": "~5.8.3",
+    "typescript-eslint": "^8.39.1",
+    "vite": "^7.1.2",
+    "vitest": "^3.2.4"
+  },
+  "lint-staged": {
+    "*.{ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{js,jsx,json,css,md}": [
+      "prettier --write"
+    ]
+  }
+}

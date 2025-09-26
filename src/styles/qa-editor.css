@@ -1,0 +1,134 @@
+/* QA Editor specific overlay to avoid stacking conflicts with management overlay */
+.qa-editor-overlay.active {
+  position: fixed;
+  inset: 0;
+  background: rgba(22, 25, 30, 0.78);
+  backdrop-filter: blur(10px) saturate(160%);
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 48px 32px 64px;
+  overflow-y: auto;
+  z-index: 1400; /* higher than generic .overlay (assumed ~1200) */
+}
+
+/* Ensure QA manager container has a subtle elevation distinct from list manager */
+.qa-editor-overlay .qa-manager {
+  width: 100%;
+  max-width: 1240px;
+  background: linear-gradient(140deg, #1f2530 0%, #242c38 70%, #283342 100%);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 20px;
+  box-shadow: 0 12px 48px -8px rgba(0,0,0,0.55), 0 4px 12px rgba(0,0,0,0.4);
+  position: relative;
+  animation: qaEditorFadeIn 260ms ease;
+}
+
+@keyframes qaEditorFadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Tighten header spacing for editor */
+.qa-editor-overlay .qa-header {
+  padding: 28px 36px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.qa-editor-overlay .qa-title {
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: linear-gradient(90deg,#d0d8ff,#f0f3ff);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin: 0;
+}
+
+.qa-editor-overlay .qa-body {
+  padding: 28px 40px 40px;
+}
+
+/* Form tweaks */
+.qa-editor-overlay .form-grid {
+  gap: 40px;
+}
+
+.qa-editor-overlay .form-section {
+  background: linear-gradient(145deg, rgba(255,255,255,0.045), rgba(255,255,255,0.02));
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 26px 28px 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.qa-editor-overlay .form-section:before { /* subtle corner lighting */
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right:0; height: 3px;
+  background: linear-gradient(90deg, #556ee6 0%, rgba(118,75,162,0.6) 50%, transparent 100%);
+  opacity: 0.85;
+}
+
+.qa-editor-overlay .form-label { font-weight: 500; letter-spacing: .3px; }
+
+.qa-editor-overlay .form-input, .qa-editor-overlay .form-textarea {
+  background: rgba(19,22,28,0.7);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 10px;
+  transition: border-color .2s, background .25s;
+}
+
+.qa-editor-overlay .form-input:focus, .qa-editor-overlay .form-textarea:focus {
+  border-color: #6b7fff;
+  background: rgba(28,33,42,0.9);
+  outline: none;
+}
+
+.qa-editor-overlay .tag-container {
+  background: rgba(20,23,30,0.55);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 10px;
+}
+
+.qa-editor-overlay .tag { background: rgba(110,135,255,0.18); }
+
+/* Close button refinement */
+.qa-editor-overlay .close-btn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.14);
+  width: 44px; height: 44px;
+  display: flex; align-items: center; justify-content: center;
+  border-radius: 14px;
+  font-size: 20px; line-height: 1;
+  cursor: pointer;
+  transition: background .2s, transform .2s;
+}
+.qa-editor-overlay .close-btn:hover { background: rgba(255,255,255,0.12); transform: translateY(-2px); }
+
+/* Submit button enhancements relying on existing classes if any */
+.qa-editor-overlay button[type=submit] {
+  min-width: 180px;
+  padding: 14px 28px;
+  border-radius: 14px;
+  font-weight: 600;
+  letter-spacing: .4px;
+  background: linear-gradient(135deg,#667eea,#764ba2);
+  border: 1px solid rgba(255,255,255,0.15);
+  box-shadow: 0 6px 18px -4px rgba(102,126,234,0.45);
+  transition: box-shadow .25s, transform .25s;
+}
+.qa-editor-overlay button[type=submit]:hover { box-shadow: 0 10px 26px -6px rgba(102,126,234,0.55); transform: translateY(-3px); }
+
+/* Responsive */
+@media (max-width: 1020px) {
+  .qa-editor-overlay { padding: 32px 20px 56px; }
+  .qa-editor-overlay .qa-body { padding: 24px 24px 36px; }
+  .qa-editor-overlay .form-grid { flex-direction: column; }
+}

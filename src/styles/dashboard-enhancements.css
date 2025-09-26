@@ -1,0 +1,349 @@
+/* Enhanced Dashboard Animations and UX Improvements */
+
+/* Smooth loading animations */
+@keyframes shimmer {
+  0% {
+    background-position: -200px 0;
+  }
+  100% {
+    background-position: calc(200px + 100%) 0;
+  }
+}
+
+.animate-pulse {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Enhanced card hover effects */
+.admin-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.admin-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+}
+
+.kpi-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.kpi-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.1),
+    transparent
+  );
+  transition: left 0.5s;
+}
+
+.kpi-card:hover::before {
+  left: 100%;
+}
+
+.kpi-card:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.15);
+}
+
+/* Smooth button interactions */
+.btn,
+.kpi-manage-btn,
+.quick-action-btn {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+
+.btn:hover,
+.kpi-manage-btn:hover,
+.quick-action-btn:hover {
+  transform: translateY(-1px);
+}
+
+.btn:active,
+.kpi-manage-btn:active,
+.quick-action-btn:active {
+  transform: translateY(0);
+}
+
+/* Loading overlay improvements */
+.loading-overlay {
+  backdrop-filter: blur(4px);
+  transition: all 0.3s ease;
+}
+
+/* Status indicator animations */
+@keyframes statusPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.8;
+    transform: scale(1.05);
+  }
+}
+
+.status-indicator {
+  animation: statusPulse 2s ease-in-out infinite;
+}
+
+/* Enhanced presentation note */
+.presentation-note {
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.presentation-note:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
+}
+
+/* Responsive improvements */
+@media (max-width: 768px) {
+  .admin-content-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .kpi-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+  }
+
+  .presentation-note {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .presentation-note > div:last-child {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}
+
+/* Skeleton loading improvements */
+.skeleton {
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200px 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+.h-4 {
+  height: 1rem;
+}
+.h-8 {
+  height: 2rem;
+}
+.bg-gray-200 {
+  background-color: #e5e7eb;
+}
+.rounded {
+  border-radius: 0.25rem;
+}
+.w-24 {
+  width: 6rem;
+}
+.w-16 {
+  width: 4rem;
+}
+.w-20 {
+  width: 5rem;
+}
+.w-32 {
+  width: 8rem;
+}
+.mb-2 {
+  margin-bottom: 0.5rem;
+}
+
+/* Enhanced grid animations */
+.admin-content-grid {
+  animation: fadeInUp 0.6s ease-out;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Staggered animation for cards */
+.left-column > *:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.left-column > *:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.left-column > *:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.right-column > *:nth-child(1) {
+  animation-delay: 0.15s;
+}
+.right-column > *:nth-child(2) {
+  animation-delay: 0.25s;
+}
+.right-column > *:nth-child(3) {
+  animation-delay: 0.35s;
+}
+.right-column > *:nth-child(4) {
+  animation-delay: 0.45s;
+}
+
+/* Enhanced focus states for accessibility */
+.btn:focus,
+.kpi-manage-btn:focus,
+.quick-action-btn:focus {
+  outline: 2px solid #667eea;
+  outline-offset: 2px;
+}
+
+/* Improved loading spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  border: 2px solid #f3f3f3;
+  border-radius: 50%;
+  border-top-color: #667eea;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Success and error state animations */
+.success-indicator {
+  animation: successPulse 0.6s ease-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.error-indicator {
+  animation: errorShake 0.5s ease-out;
+}
+
+@keyframes errorShake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-5px);
+  }
+  75% {
+    transform: translateX(5px);
+  }
+}
+
+/* Enhanced tooltip styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.8);
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 12px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+  z-index: 1000;
+}
+
+.tooltip:hover::after {
+  opacity: 1;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .presentation-note {
+    background: linear-gradient(135deg, #1a202c 0%, #2d3748 100%);
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+
+  .admin-card {
+    background: rgba(26, 32, 44, 0.95);
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+
+  .kpi-card {
+    background: rgba(26, 32, 44, 0.95);
+    border-color: #4a5568;
+    color: #e2e8f0;
+  }
+}
+
+/* Print styles */
+@media print {
+  .admin-dashboard {
+    background: white !important;
+  }
+
+  .btn,
+  .kpi-manage-btn,
+  .quick-action-btn {
+    display: none;
+  }
+
+  .admin-card,
+  .kpi-card {
+    break-inside: avoid;
+    box-shadow: none;
+    border: 1px solid #ccc;
+  }
+}

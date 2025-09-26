@@ -1,0 +1,173 @@
+// Prisma schema for AlumniCo
+// Maps core entities from mock-server/db.json
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl= env("DIRECT_URL")
+}
+
+model User {
+  id             String   @id
+  email          String   @unique
+  firstName      String?
+  lastName       String?
+  fullName       String?
+  role           String?
+  status         String?
+  avatar         String?
+  bio            String?
+  location       String?
+  company        String?
+  jobTitle       String?
+  graduationYear Int?
+  skills         String[]
+  interests      String[]
+  isVerified     Boolean? @default(false)
+  lastLoginAt    DateTime?
+  createdAt      DateTime? @default(now())
+  updatedAt      DateTime? @updatedAt
+
+  chapterId String?
+  chapter   Chapter? @relation(fields: [chapterId], references: [id])
+}
+
+model Chapter {
+  id               String  @id
+  name             String
+  location         String?
+  province         String?
+  status           String?
+  performance      String?
+  leadName         String?
+  leadEmail        String?
+  leadPhone        String?
+  memberCount      Int?    @default(0)
+  engagementRate   Int?    @default(0)
+  eventsThisMonth  Int?    @default(0)
+  meetingVenue     String?
+  meetingFrequency String?
+  description      String?
+  focusAreas       String[]
+  sponsor          String?
+  isSponsored      Boolean? @default(false)
+
+  users User[]
+}
+
+model Event {
+  id              String  @id
+  title           String
+  slug            String
+  excerpt         String?
+  description     String?
+  organizer       String?
+  location        String?
+  venue           String?
+  address         String?
+  startDate       DateTime?
+  endDate         DateTime?
+  sponsor         String?
+  status          String?
+  isFeatured      Boolean? @default(false)
+  tags            String[]
+  rsvpCount       Int?     @default(0)
+  attendanceCount Int?     @default(0)
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
+}
+
+model Sponsor {
+  id          String  @id
+  name        String
+  logo        String?
+  description String?
+  website     String?
+  tier        String?
+  createdAt   DateTime? @default(now())
+}
+
+model Partner {
+  id                String  @id
+  name              String
+  description       String?
+  industry          String?
+  location          String?
+  contactEmail      String?
+  partnershipSince  DateTime?
+  lastInteraction   DateTime?
+  tags              String[]
+  isHiring          Boolean? @default(false)
+  tier              String?
+  createdAt         DateTime? @default(now())
+}
+
+model Opportunity {
+  id              String  @id
+  title           String
+  company         String?
+  type            String?
+  level           String?
+  location        String?
+  isRemote        Boolean? @default(false)
+  salary          String?
+  description     String?
+  requirements    String[]
+  tags            String[]
+  status          String?
+  applicationCount Int?    @default(0)
+  viewCount        Int?    @default(0)
+  postedDate      DateTime?
+  expiryDate      DateTime?
+  contactEmail    String?
+  partnerId       String?
+  featured        Boolean? @default(false)
+  urgent          Boolean? @default(false)
+  createdAt       DateTime? @default(now())
+  updatedAt       DateTime? @updatedAt
+}
+
+model Mentorship {
+  id          String  @id
+  mentorName  String?
+  menteeName  String?
+  topic       String?
+  status      String?
+  startDate   DateTime?
+  endDate     DateTime?
+  tags        String[]
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model QAItem {
+  id          String  @id
+  question    String
+  answer      String?
+  tags        String[]
+  status      String?
+  views       Int?     @default(0)
+  votes       Int?     @default(0)
+  createdAt   DateTime? @default(now())
+  updatedAt   DateTime? @updatedAt
+}
+
+model Spotlight {
+  id                 String  @id
+  title              String
+  content            String?
+  type               String?
+  status             String?
+  featuredAlumniId   String?
+  featuredAlumniName String?
+  tags               String[]
+  viewCount          Int?     @default(0)
+  likeCount          Int?     @default(0)
+  shareCount         Int?     @default(0)
+  createdAt          DateTime? @default(now())
+  updatedAt          DateTime? @updatedAt
+}
