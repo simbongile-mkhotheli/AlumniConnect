@@ -5,18 +5,23 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "tsc && vite build",
+    "build": "tsc --noEmit && vite build",
     "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
     "preview": "vite preview",
     "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
+    "start": "npm run preview",
+    "postbuild": "echo 'Frontend build complete'",
 
     "server": "npm --prefix server run dev",
     "server:build": "npm --prefix server run build",
     "server:migrate": "npm --prefix server run prisma:dev",
     "server:seed": "npm --prefix server run db:seed",
-    "dev:all": "cross-env VITE_API_BASE_URL=http://localhost:4000/api concurrently \"npm run server\" \"npm run dev\" --names \"api,vite\" --prefix-colors \"blue,green\""
+    "dev:all": "cross-env VITE_API_BASE_URL=http://localhost:4000/api concurrently \"npm run server\" \"npm run dev\" --names \"api,vite\" --prefix-colors \"blue,green\"",
+    
+    "deploy:frontend": "npm run build && npm run start",
+    "deploy:server": "npm run server:build && npm --prefix server run start"
   },
   "dependencies": {
     "@types/axios": "^0.9.36",

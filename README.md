@@ -1,6 +1,33 @@
-# AlumniConnect - Feature Parity & Consistency Guidelines
+# AlumniConnect - Admin Dashboard
 
-Welcome to the AlumniConnect project! This README serves as your guide to maintaining consistency, feature parity, and high code quality across all components and modules.
+Welcome to the AlumniConnect project! A comprehensive alumni management platform built with React, TypeScript, and Node.js.
+
+## 🚀 Quick Start
+
+### Development
+```bash
+# Install dependencies
+npm install
+cd server && npm install && cd ..
+
+# Start development servers
+npm run dev:all
+```
+
+### Production Deployment
+See [DEPLOYMENT.md](./DEPLOYMENT.md) for detailed deployment instructions.
+
+## 📋 Prerequisites
+
+- Node.js 18+ 
+- PostgreSQL database
+- npm or yarn
+
+---
+
+## 📖 Development Guidelines
+
+This README serves as your guide to maintaining consistency, feature parity, and high code quality across all components and modules.
 
 ## 🎯 Our Commitment to Excellence
 

@@ -45,21 +45,20 @@ Thumbs.db
 
 # Debug and temporary files
 debug-*.html
-test-*.cjs
-test-*.js
-fix-*.cjs
-verify-*.cjs
-*-test.cjs
-*-fix.cjs
-*-summary.cjs
-simple-test.cjs
-realistic-data-summary.cjs
-final-verification.cjs
+debug-*.js
 auth-manager.html
 filter-debug.html
 build-log.txt
-debug-empty-data.js
 nul
+
+# Test files (keep for development)
+# test-*.cjs
+# test-*.js
+# fix-*.cjs
+# verify-*.cjs
+# *-test.cjs
+# *-fix.cjs
+# *-summary.cjs
 
 
 
