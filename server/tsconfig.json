@@ -13,11 +13,11 @@
     "strict": false,
     "forceConsistentCasingInFileNames": true,
     "declaration": false,
-    "sourceMap": false
+    "sourceMap": false,
+    "lib": ["ES2020"],
+    "types": ["node"],
+    "typeRoots": ["node_modules/@types"]
   },
   "include": ["src", "prisma"],
-  "exclude": ["node_modules", "dist"],
-  "ts-node": {
-    "esm": false
-  }
+  "exclude": ["node_modules", "dist"]
 }
