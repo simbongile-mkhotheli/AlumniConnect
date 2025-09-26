@@ -11,13 +11,9 @@ services:
       - key: NODE_ENV
         value: production
       - key: DATABASE_URL
-        fromDatabase:
-          name: alumniconnect-db
-          property: connectionString
+        value: postgresql://neondb_owner:npg_WmHf1JnMPCw4@ep-square-wave-agdwyl6l-pooler.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       - key: DIRECT_URL
-        fromDatabase:
-          name: alumniconnect-db
-          property: connectionString
+        value: postgresql://neondb_owner:npg_WmHf1JnMPCw4@ep-square-wave-agdwyl6l.c-2.eu-central-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require
       - key: PORT
         value: 4000
 
@@ -30,12 +26,12 @@ services:
       - key: NODE_ENV
         value: production
       - key: VITE_API_BASE_URL
-        value: https://alumniconnect-api.onrender.com/api
+        value: https://alumniconnect-api.onrender.com
+      - key: VITE_APP_NAME
+        value: AlumniConnect Admin Dashboard
+      - key: VITE_APP_VERSION
+        value: 1.0.0
+      - key: VITE_ENABLE_MOCK_API
+        value: false
 
-# Database
-databases:
-  - name: alumniconnect-db
-    databaseName: alumniconnect
-    user: alumniconnect
-    region: oregon
-    plan: starter
+# No database needed - using existing Neon database
