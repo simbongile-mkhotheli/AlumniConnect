@@ -343,28 +343,3 @@ _Maintained by: AlumniConnect Development Team_
 
 
 ---
-
-## 🧪 Legacy Mock Server (json-server)
-
-The repository previously included a mock server under `mock-server/` (json-server + `db.json`) to speed up early development. The project now runs against the real backend (Express + Prisma + Postgres) by default, and the mock server is considered legacy.
-
-Current state:
-- Frontend defaults to real API using `VITE_API_BASE_URL` or Vite proxy for `/api`.
-- Prisma seeding no longer hard-codes `mock-server/db.json`. The seed script checks:
-  1. `SEED_FILE` env var
-  2. `server/seeds/db.json`
-  3. `mock-server/db.json` (fallback, deprecated)
-
-How to remove the mock server safely:
-1. Move your seed data to `server/seeds/db.json` (or set `SEED_FILE` when running seeding)
-2. Ensure `VITE_ENABLE_MOCK_API` is not set to `true` in any environment
-3. Search and remove remaining references to `mock-server` and `MockDataLoader` if you no longer need mock flows
-4. Delete the `mock-server/` folder
-
-If you keep the mock server temporarily, do not rely on it in production. Prefer running:
-
-```
-npm run dev:all
-```
-
-This starts the backend API and the Vite dev server together.

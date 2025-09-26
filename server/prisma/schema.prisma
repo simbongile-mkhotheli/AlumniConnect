@@ -1,5 +1,5 @@
 // Prisma schema for AlumniCo
-// Maps core entities from mock-server/db.json
+// Maps core entities for Alumni Connect
 
 generator client {
   provider = "prisma-client-js"

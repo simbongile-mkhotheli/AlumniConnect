@@ -9,11 +9,9 @@ async function main() {
   // Resolve seed data path with priority:
   // 1) SEED_FILE env var (absolute or relative to repo root)
   // 2) server/seeds/db.json (co-located with server)
-  // 3) mock-server/db.json (legacy fallback)
   const candidates = [
     process.env.SEED_FILE,
     path.resolve(process.cwd(), '..', 'server', 'seeds', 'db.json'),
-    path.resolve(process.cwd(), '..', 'mock-server', 'db.json'),
   ].filter(Boolean) as string[];
 
   let raw: string | null = null;
@@ -32,7 +30,7 @@ async function main() {
 
   if (!raw) {
     throw new Error(
-      'Seed data file not found. Provide SEED_FILE or add server/seeds/db.json (or keep legacy mock-server/db.json).'
+      'Seed data file not found. Provide SEED_FILE or add server/seeds/db.json.'
     );
   }
 

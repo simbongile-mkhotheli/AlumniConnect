@@ -11,7 +11,7 @@
     "type-check": "tsc --noEmit",
     "test": "vitest",
     "test:run": "vitest run",
-    "mock:server": "echo Mock server deprecated. Use 'npm run server' instead && exit 1",
+
     "server": "npm --prefix server run dev",
     "server:build": "npm --prefix server run build",
     "server:migrate": "npm --prefix server run prisma:dev",

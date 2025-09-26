@@ -61,8 +61,7 @@ build-log.txt
 debug-empty-data.js
 nul
 
-# Mock server (deprecated)
-mock-server/
+
 
 # Scripts for testing/debugging
 scripts/migration-helpers.ts
