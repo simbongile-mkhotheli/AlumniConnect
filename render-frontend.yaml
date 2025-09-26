@@ -8,7 +8,7 @@ services:
       - key: NODE_ENV
         value: production
       - key: VITE_API_BASE_URL
-        value: https://alumniconnect-k2y2.onrender.com
+        value: https://alumniconnect-k2y2.onrender.com/api
       - key: VITE_APP_NAME
         value: AlumniConnect Admin Dashboard
       - key: VITE_APP_VERSION
