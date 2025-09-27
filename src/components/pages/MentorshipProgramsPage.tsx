@@ -15,6 +15,7 @@ interface MentorshipCardProps {
 function MentorshipCard({ mentorship, onViewDetails, compact = false }: MentorshipCardProps) {
   // Helper function to get status badge color
   const getStatusBadgeColor = (status: string): string => {
+    if (!status) return 'info'; // Default color if status is undefined/null
     switch (status.toLowerCase()) {
       case 'active': return 'success';
       case 'pending': return 'warning';
@@ -27,6 +28,7 @@ function MentorshipCard({ mentorship, onViewDetails, compact = false }: Mentorsh
 
   // Helper function to get type icon
   const getTypeIcon = (type: string): string => {
+    if (!type) return '🎯'; // Default icon if type is undefined/null
     switch (type.toLowerCase()) {
       case 'technical': return '💻';
       case 'career': return '📈';
@@ -63,10 +65,10 @@ function MentorshipCard({ mentorship, onViewDetails, compact = false }: Mentorsh
         <div className="event-title-section">
           <h3 className="event-title">{mentorship.title}</h3>
           <div className="event-meta">
-            <span className="event-location">{getTypeIcon(mentorship.type)} {mentorship.type.charAt(0).toUpperCase() + mentorship.type.slice(1)}</span>
+            <span className="event-location">{getTypeIcon(mentorship.type)} {mentorship.type ? mentorship.type.charAt(0).toUpperCase() + mentorship.type.slice(1) : 'Unknown'}</span>
             <span className="event-location">👤 {mentorship.mentorName}</span>
             <span className={`status-badge ${getStatusBadgeColor(mentorship.status)}`}>
-              {mentorship.status.charAt(0).toUpperCase() + mentorship.status.slice(1)}
+              {mentorship.status ? mentorship.status.charAt(0).toUpperCase() + mentorship.status.slice(1) : 'Unknown'}
             </span>
           </div>
         </div>
