@@ -6,11 +6,11 @@ import {
   useBulkActions,
   useApiData,
   useMutation,
-} from '../../hooks';
-import { PartnersService } from '@features/partners/services';
+} from '../../../../hooks';
+import { PartnersService } from '@services/partnersService';
 import { LoadingSpinner, CardSkeleton } from '../../../../components/common/LoadingSpinner';
 import { ErrorMessage, EmptyState } from '../../../../components/common/ErrorMessage';
-import type { Partner } from '../../types';
+import type { Partner } from '@shared/types';
 
 const PartnersManagementPage: React.FC = () => {
   const navigate = useNavigate();
@@ -35,11 +35,15 @@ const PartnersManagementPage: React.FC = () => {
     loading,
     error,
     refetch,
-  } = useApiData(() => PartnersService.getPartners(1, 50, filters), [filters], {
+  } = useApiData(
+    () => PartnersService.getPartners(1, 50, filters),
+    [filters],
+    {
     cacheKey: 'partners-list',
     cacheDuration: 5 * 60 * 1000, // 5 minutes
     refetchOnWindowFocus: true,
-  });
+    }
+  );
 
   // Bulk operations mutation (typed)
   const bulkMutation = useMutation(
@@ -93,28 +97,28 @@ const PartnersManagementPage: React.FC = () => {
     }
   );
 
-  const partners = partnersResponse?.data ?? [];
+  const partners: Partner[] = ((partnersResponse as unknown) as import('@shared/types').PaginatedResponse<Partner> | null)?.data ?? [];
   const [filteredPartners, setFilteredPartners] = useState<Partner[]>([]);
 
   // Filter partners based on current filters (client-side filtering for cached data)
   useEffect(() => {
-    let filtered = partners;
+  let filtered: Partner[] = partners;
 
     if (filters.status && filters.status !== 'all') {
-      filtered = filtered.filter(partner => partner.status === filters.status);
+  filtered = filtered.filter((partner: Partner) => partner.status === filters.status);
     }
 
     if (filters.type && filters.type !== 'all') {
-      filtered = filtered.filter(partner => partner.type === filters.type);
+  filtered = filtered.filter((partner: Partner) => partner.type === filters.type);
     }
 
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
       filtered = filtered.filter(
-        partner =>
+        (partner: Partner) =>
           (partner.name ?? '').toLowerCase().includes(searchLower) ||
           (partner.description ?? '').toLowerCase().includes(searchLower) ||
-          (partner.tags ?? []).some(tag =>
+          (partner.tags ?? []).some((tag: string) =>
             tag.toLowerCase().includes(searchLower)
           )
       );
@@ -380,26 +384,26 @@ const PartnersManagementPage: React.FC = () => {
             </div>
             <div className="partner-summary-card">
               <div className="partner-summary-value">
-                {partners.filter(p => p.status === 'active').length}
+                {partners.filter((p: Partner) => p.status === 'active').length}
               </div>
               <div className="partner-summary-label">Active</div>
             </div>
             <div className="partner-summary-card">
               <div className="partner-summary-value">
-                {partners.filter(p => p.status === 'pending').length}
+                {partners.filter((p: Partner) => p.status === 'pending').length}
               </div>
               <div className="partner-summary-label">Pending</div>
             </div>
             <div className="partner-summary-card">
               <div className="partner-summary-value">
-                {partners.filter(p => p.status === 'inactive').length}
+                {partners.filter((p: Partner) => p.status === 'inactive').length}
               </div>
               <div className="partner-summary-label">Inactive</div>
             </div>
             <div className="partner-summary-card">
               <div className="partner-summary-value">
                 {partners.reduce(
-                  (sum, p) => sum + (p.jobOpportunities ?? 0),
+                  (sum: number, p: Partner) => sum + (p.jobOpportunities ?? 0),
                   0
                 )}
               </div>
@@ -407,7 +411,7 @@ const PartnersManagementPage: React.FC = () => {
             </div>
             <div className="partner-summary-card">
               <div className="partner-summary-value">
-                {partners.reduce((sum, p) => sum + (p.alumniHired ?? 0), 0)}
+                {partners.reduce((sum: number, p: Partner) => sum + (p.alumniHired ?? 0), 0)}
               </div>
               <div className="partner-summary-label">Alumni Hired</div>
             </div>
@@ -461,7 +465,7 @@ const PartnersManagementPage: React.FC = () => {
                   selectedItems.size > 0 &&
                   selectedItems.size === filteredPartners.length
                 }
-                onChange={() => selectAll(filteredPartners.map(p => p.id))}
+                onChange={() => selectAll(filteredPartners.map((p: Partner) => p.id))}
               />
               Select All
             </label>
@@ -501,7 +505,7 @@ const PartnersManagementPage: React.FC = () => {
           )}
 
           <div className="partners-grid">
-            {filteredPartners.map(partner => (
+            {filteredPartners.map((partner: Partner) => (
               <div
                 key={partner.id}
                 className={`partner-card ${selectedItems.has(partner.id) ? 'selected' : ''}`}
@@ -550,7 +554,7 @@ const PartnersManagementPage: React.FC = () => {
                     </div>
                   </div>
                   <div className="partner-tags">
-                    {(partner.tags ?? []).map((tag, index) => (
+                    {(partner.tags ?? []).map((tag: string, index: number) => (
                       <span key={index} className="partner-tag">
                         {tag}
                       </span>

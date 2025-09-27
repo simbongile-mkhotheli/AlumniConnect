@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useToast } from '../../contexts/ToastContext';
+import { useToast } from '../../../../contexts/ToastContext';
 import { useParams, useNavigate } from 'react-router-dom';
 import { MentorshipService } from '@features/mentorship/services';
-import { useMutationWithRefresh } from '../../hooks/useMutationWithRefresh';
+import { useMutationWithRefresh } from '../../../../hooks/useMutationWithRefresh';
 import { LoadingSpinner } from '../../../../components/common/LoadingSpinner';
 import { ErrorMessage } from '../../../../components/common/ErrorMessage';
 import type { Mentorship } from '../../types';

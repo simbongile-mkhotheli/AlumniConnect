@@ -22,6 +22,29 @@ export const SponsorDetailsPage: React.FC = () => {
     }
   }, [id]);
 
+  // Normalize backend data to expected shapes/types
+  const sanitizeSponsor = (raw: any): Sponsor => {
+    return {
+      id: String(raw.id ?? ''),
+      name: String(raw.name ?? ''),
+      tier: (raw.tier ?? 'bronze') as Sponsor['tier'],
+      status: (raw.status ?? 'unknown') as any,
+      logo: raw.logo ? String(raw.logo) : undefined,
+      description: String(raw.description ?? ''),
+      website: raw.website ? String(raw.website) : undefined,
+      contactEmail: String(raw.contactEmail ?? ''),
+      eventsSponsored: Number(raw.eventsSponsored ?? 0),
+      chaptersSponsored: Number(raw.chaptersSponsored ?? 0),
+      totalValue: Number(raw.totalValue ?? 0),
+      partnershipSince: String(raw.partnershipSince ?? ''),
+      tags: Array.isArray(raw.tags)
+        ? raw.tags.filter(Boolean).map((t: any) => String(t))
+        : [],
+      createdAt: String(raw.createdAt ?? ''),
+      updatedAt: raw.updatedAt ? String(raw.updatedAt) : undefined,
+    };
+  };
+
   const loadSponsorDetails = async (sponsorId: string) => {
     try {
       setLoading(true);
@@ -31,7 +54,7 @@ export const SponsorDetailsPage: React.FC = () => {
       const response = await SponsorsService.getSponsor(sponsorId);
 
       if (response.success && response.data) {
-        setSponsor(response.data);
+        setSponsor(sanitizeSponsor(response.data));
         console.log('✅ Sponsor details loaded:', response.data);
       } else {
         throw new Error(response.message || 'Failed to load sponsor details');
@@ -128,6 +151,7 @@ export const SponsorDetailsPage: React.FC = () => {
 
   const formatDate = (dateString: string) => {
     try {
+      if (!dateString) return 'Unknown';
       return new Date(dateString).toLocaleDateString('en-ZA', {
         year: 'numeric',
         month: 'long',
@@ -139,12 +163,26 @@ export const SponsorDetailsPage: React.FC = () => {
   };
 
   const formatCurrency = (amount: number) => {
+    const safeAmount = Number.isFinite(amount as unknown as number)
+      ? (amount as number)
+      : 0;
     return new Intl.NumberFormat('en-ZA', {
       style: 'currency',
       currency: 'ZAR',
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
-    }).format(amount);
+    }).format(safeAmount);
+  };
+
+  // Helpers to guard against undefined/invalid values from API
+  const safeCapitalize = (value?: string) => {
+    if (!value || typeof value !== 'string') return '';
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  };
+
+  const safeNumber = (value: unknown, fallback = 0) => {
+    const num = typeof value === 'string' ? Number(value) : (value as number);
+    return Number.isFinite(num) ? (num as number) : fallback;
   };
 
   const getSponsorIcon = (name: string) => {
@@ -249,15 +287,14 @@ export const SponsorDetailsPage: React.FC = () => {
               <h2 className="sponsor-details-title">{sponsor.name}</h2>
               <div className="sponsor-details-badges">
                 <span
-                  className={`status-badge ${getStatusBadgeClass(sponsor.status)}`}
+                  className={`status-badge ${getStatusBadgeClass(sponsor.status || 'unknown')}`}
                 >
-                  {sponsor.status.charAt(0).toUpperCase() +
-                    sponsor.status.slice(1)}
+                  {safeCapitalize(sponsor.status || 'unknown')}
                 </span>
                 <span
-                  className={`tier-badge ${getTierBadgeClass(sponsor.tier)}`}
+                  className={`tier-badge ${getTierBadgeClass(sponsor.tier || 'bronze')}`}
                 >
-                  {sponsor.tier.charAt(0).toUpperCase() + sponsor.tier.slice(1)}{' '}
+                  {safeCapitalize(sponsor.tier || 'bronze')}{' '}
                   Sponsor
                 </span>
                 <span className="partnership-badge">
@@ -336,36 +373,28 @@ export const SponsorDetailsPage: React.FC = () => {
                   <div className="metric-card">
                     <div className="metric-icon">💰</div>
                     <div className="metric-content">
-                      <div className="metric-value">
-                        {formatCurrency(sponsor.totalValue)}
-                      </div>
+                      <div className="metric-value">{formatCurrency(safeNumber(sponsor.totalValue))}</div>
                       <div className="metric-label">Total Value</div>
                     </div>
                   </div>
                   <div className="metric-card">
                     <div className="metric-icon">📅</div>
                     <div className="metric-content">
-                      <div className="metric-value">
-                        {sponsor.eventsSponsored}
-                      </div>
+                      <div className="metric-value">{safeNumber(sponsor.eventsSponsored)}</div>
                       <div className="metric-label">Events Sponsored</div>
                     </div>
                   </div>
                   <div className="metric-card">
                     <div className="metric-icon">🏢</div>
                     <div className="metric-content">
-                      <div className="metric-value">
-                        {sponsor.chaptersSponsored}
-                      </div>
+                      <div className="metric-value">{safeNumber(sponsor.chaptersSponsored)}</div>
                       <div className="metric-label">Chapters Supported</div>
                     </div>
                   </div>
                   <div className="metric-card">
                     <div className="metric-icon">⏱️</div>
                     <div className="metric-content">
-                      <div className="metric-value">
-                        {calculatePartnershipDuration(sponsor.partnershipSince)}
-                      </div>
+                      <div className="metric-value">{calculatePartnershipDuration(sponsor.partnershipSince || '')}</div>
                       <div className="metric-label">Partnership Duration</div>
                     </div>
                   </div>
@@ -406,16 +435,14 @@ export const SponsorDetailsPage: React.FC = () => {
                       )}
                       <div className="info-item">
                         <label>Tier:</label>
-                        <span className={`tier-text ${sponsor.tier}`}>
-                          {sponsor.tier.charAt(0).toUpperCase() +
-                            sponsor.tier.slice(1)}
+                        <span className={`tier-text ${sponsor.tier || 'bronze'}`}>
+                          {safeCapitalize(sponsor.tier || 'bronze')}
                         </span>
                       </div>
                       <div className="info-item">
                         <label>Status:</label>
-                        <span className={`status-text ${sponsor.status}`}>
-                          {sponsor.status.charAt(0).toUpperCase() +
-                            sponsor.status.slice(1)}
+                        <span className={`status-text ${sponsor.status || 'unknown'}`}>
+                          {safeCapitalize(sponsor.status || 'unknown')}
                         </span>
                       </div>
                     </div>
@@ -432,17 +459,15 @@ export const SponsorDetailsPage: React.FC = () => {
                       </div>
                       <div className="info-item">
                         <label>Total Investment:</label>
-                        <span className="investment-amount">
-                          {formatCurrency(sponsor.totalValue)}
-                        </span>
+                        <span className="investment-amount">{formatCurrency(safeNumber(sponsor.totalValue))}</span>
                       </div>
                       <div className="info-item">
                         <label>Events Sponsored:</label>
-                        <span>{sponsor.eventsSponsored} events</span>
+                        <span>{safeNumber(sponsor.eventsSponsored)} events</span>
                       </div>
                       <div className="info-item">
                         <label>Chapters Supported:</label>
-                        <span>{sponsor.chaptersSponsored} chapters</span>
+                        <span>{safeNumber(sponsor.chaptersSponsored)} chapters</span>
                       </div>
                     </div>
                   </div>
@@ -478,7 +503,7 @@ export const SponsorDetailsPage: React.FC = () => {
                     <div className="info-content">
                       <div className="info-item">
                         <label>Account Created:</label>
-                        <span>{formatDate(sponsor.createdAt)}</span>
+                        <span>{formatDate(sponsor.createdAt || '')}</span>
                       </div>
                       <div className="info-item">
                         <label>Last Activity:</label>
@@ -507,13 +532,13 @@ export const SponsorDetailsPage: React.FC = () => {
                 )}
 
                 {/* Tags */}
-                {sponsor.tags && sponsor.tags.length > 0 && (
+                {Array.isArray(sponsor.tags) && sponsor.tags.length > 0 && (
                   <div className="sponsor-tags-section">
                     <h3 className="info-section-title">🏷️ Categories</h3>
                     <div className="sponsor-tags">
-                      {sponsor.tags.map((tag, index) => (
+                      {sponsor.tags.filter(Boolean).map((tag, index) => (
                         <span key={index} className="sponsor-tag">
-                          {tag.charAt(0).toUpperCase() + tag.slice(1)}
+                          {safeCapitalize(tag)}
                         </span>
                       ))}
                     </div>
@@ -572,10 +597,8 @@ export const SponsorDetailsPage: React.FC = () => {
                     engagement tracking, and performance dashboards.
                   </p>
                   <div className="placeholder-stats">
-                    <div className="placeholder-stat">
-                      <div className="stat-value">
-                        {formatCurrency(sponsor.totalValue)}
-                      </div>
+                      <div className="placeholder-stat">
+                      <div className="stat-value">{formatCurrency(safeNumber(sponsor.totalValue))}</div>
                       <div className="stat-label">Total Investment</div>
                     </div>
                     <div className="placeholder-stat">
@@ -613,8 +636,7 @@ export const SponsorDetailsPage: React.FC = () => {
                   <div className="placeholder-stats">
                     <div className="placeholder-stat">
                       <div className="stat-value">
-                        {sponsor.tier.charAt(0).toUpperCase() +
-                          sponsor.tier.slice(1)}
+                        {safeCapitalize(sponsor.tier || 'bronze')}
                       </div>
                       <div className="stat-label">Sponsorship Tier</div>
                     </div>

@@ -1,11 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useToast } from '../../contexts/ToastContext';
+import { useToast } from '../../../../contexts/ToastContext';
 import { useParams, useNavigate } from 'react-router-dom';
-import { PartnersService } from '@features/partners/services';
-import { useMutationWithRefresh } from '../../hooks/useMutationWithRefresh';
+import { PartnersService } from '@services/partnersService';
+import { useMutationWithRefresh } from '../../../../hooks/useMutationWithRefresh';
 import { LoadingSpinner } from '../../../../components/common/LoadingSpinner';
 import { ErrorMessage } from '../../../../components/common/ErrorMessage';
-import type { Partner } from '../../types';
+import type { Partner } from '@shared/types';
 
 // Use widened unions aligned with central types; include other possible values
 type PartnerType = Partner['type'];

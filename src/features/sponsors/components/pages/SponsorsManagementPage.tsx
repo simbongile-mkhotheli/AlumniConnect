@@ -9,7 +9,13 @@ import {
 import { SponsorsService } from '@features/sponsors/services';
 import { LoadingSpinner, CardSkeleton } from '../../../../components/common/LoadingSpinner';
 import { ErrorMessage, EmptyState } from '../../../../components/common/ErrorMessage';
-import type { Sponsor, ApiResponse } from '@features/sponsors/types';
+import type {
+  Sponsor,
+  ApiResponse,
+  SponsorFilters,
+  SponsorStatus,
+  SponsorTier,
+} from '@features/sponsors/types';
 
 export const SponsorsManagementPage: React.FC = () => {
   const navigate = useNavigate();
@@ -19,6 +25,13 @@ export const SponsorsManagementPage: React.FC = () => {
     tier: '',
     search: '',
   });
+
+  // Map generic filter state to strictly-typed SponsorFilters for service
+  const mappedFilters: SponsorFilters = {
+    status: (filters.status || undefined) as SponsorStatus | undefined,
+    tier: (filters.tier || undefined) as SponsorTier | undefined,
+    search: filters.search || undefined,
+  };
 
   const {
     selectedItems,
@@ -34,11 +47,15 @@ export const SponsorsManagementPage: React.FC = () => {
     loading,
     error,
     refetch,
-  } = useApiData(() => SponsorsService.getSponsors(1, 50, filters), [filters], {
+  } = useApiData(
+    () => SponsorsService.getSponsors(1, 50, mappedFilters),
+    [filters],
+    {
     cacheKey: 'sponsors-list',
     cacheDuration: 5 * 60 * 1000, // 5 minutes
     refetchOnWindowFocus: true,
-  });
+    }
+  );
 
   // Bulk operations mutation
   const bulkMutation = useMutation(
@@ -110,12 +127,16 @@ export const SponsorsManagementPage: React.FC = () => {
 
     if (filters.search) {
       const searchLower = filters.search.toLowerCase();
-      filtered = filtered.filter(
-        sponsor =>
-          sponsor.name.toLowerCase().includes(searchLower) ||
-          sponsor.description.toLowerCase().includes(searchLower) ||
-          sponsor.tags.some(tag => tag.toLowerCase().includes(searchLower))
-      );
+      filtered = filtered.filter(sponsor => {
+        const name = (sponsor.name || '').toLowerCase();
+        const desc = (sponsor.description || '').toLowerCase();
+        const tags = Array.isArray(sponsor.tags) ? sponsor.tags : [];
+        return (
+          name.includes(searchLower) ||
+          desc.includes(searchLower) ||
+          tags.some(tag => (tag || '').toLowerCase().includes(searchLower))
+        );
+      });
     }
 
     setFilteredSponsors(filtered);
@@ -188,7 +209,18 @@ export const SponsorsManagementPage: React.FC = () => {
   };
 
   const formatCurrency = (amount: number) => {
-    return `$${(amount / 1000).toFixed(0)}K`;
+    const n = typeof amount === 'number' && Number.isFinite(amount) ? amount : 0;
+    return `$${(n / 1000).toFixed(0)}K`;
+  };
+
+  const safeCapitalize = (value?: string | null) => {
+    if (!value || typeof value !== 'string') return 'Unknown';
+    return value.charAt(0).toUpperCase() + value.slice(1);
+  };
+
+  const safeNumber = (value: unknown, fallback = 0) => {
+    const num = typeof value === 'string' ? Number(value) : (value as number);
+    return Number.isFinite(num) ? (num as number) : fallback;
   };
 
   // Loading state
@@ -351,20 +383,20 @@ export const SponsorsManagementPage: React.FC = () => {
             <div className="sponsor-summary-card">
               <div className="sponsor-summary-value">
                 {formatCurrency(
-                  sponsors.reduce((sum, s) => sum + s.totalValue, 0)
+                  sponsors.reduce((sum, s) => sum + (s.totalValue || 0), 0)
                 )}
               </div>
               <div className="sponsor-summary-label">Total Value</div>
             </div>
             <div className="sponsor-summary-card">
               <div className="sponsor-summary-value">
-                {sponsors.reduce((sum, s) => sum + s.eventsSponsored, 0)}
+                {sponsors.reduce((sum, s) => sum + (s.eventsSponsored || 0), 0)}
               </div>
               <div className="sponsor-summary-label">Events Sponsored</div>
             </div>
             <div className="sponsor-summary-card">
               <div className="sponsor-summary-value">
-                {sponsors.reduce((sum, s) => sum + s.chaptersSponsored, 0)}
+                {sponsors.reduce((sum, s) => sum + (s.chaptersSponsored || 0), 0)}
               </div>
               <div className="sponsor-summary-label">Chapters Sponsored</div>
             </div>
@@ -475,38 +507,35 @@ export const SponsorsManagementPage: React.FC = () => {
                 />
                 <div className="sponsor-image">
                   <div className="sponsor-image-placeholder">
-                    {getSponsorIcon(sponsor.name)}
+                    {getSponsorIcon(sponsor.name || '')}
                   </div>
-                  <div className={`sponsor-tier-badge ${sponsor.tier}`}>
-                    {sponsor.tier.charAt(0).toUpperCase() +
-                      sponsor.tier.slice(1)}
+                  <div className={`sponsor-tier-badge ${sponsor.tier || 'unknown'}`}>
+                    {safeCapitalize(sponsor.tier || 'bronze')}
                   </div>
-                  <div className={`sponsor-status ${sponsor.status}`}>
-                    {sponsor.status.charAt(0).toUpperCase() +
-                      sponsor.status.slice(1)}
+                  <div className={`sponsor-status ${sponsor.status || 'unknown'}`}>
+                    {safeCapitalize(sponsor.status || 'unknown')}
                   </div>
                 </div>
                 <div className="sponsor-card-content">
                   <div className="sponsor-card-header">
                     <div className="sponsor-title">{sponsor.name}</div>
                     <div className="sponsor-subtitle">
-                      {sponsor.tags[0]} •{' '}
-                      {sponsor.tier.charAt(0).toUpperCase() +
-                        sponsor.tier.slice(1)}{' '}
+                      {(Array.isArray(sponsor.tags) && sponsor.tags.length > 0 ? sponsor.tags[0] : 'General')} •{' '}
+                      {safeCapitalize(sponsor.tier || 'bronze')}{' '}
                       Sponsor
                     </div>
                   </div>
-                  <div className="sponsor-excerpt">{sponsor.description}</div>
+                  <div className="sponsor-excerpt">{sponsor.description || ''}</div>
                   <div className="sponsor-meta">
                     <div className="sponsor-meta-item">
-                      📅 Partnership since {sponsor.partnershipSince}
+                      📅 Partnership since {sponsor.partnershipSince || 'Unknown'}
                     </div>
                     <div className="sponsor-meta-item">
-                      💰 {formatCurrency(sponsor.totalValue)} annual value
+                      💰 {formatCurrency(safeNumber(sponsor.totalValue))} annual value
                     </div>
                   </div>
                   <div className="sponsor-tags">
-                    {sponsor.tags.map((tag, index) => (
+                    {(Array.isArray(sponsor.tags) ? sponsor.tags : []).map((tag, index) => (
                       <span key={index} className="sponsor-tag">
                         {tag}
                       </span>
@@ -515,11 +544,11 @@ export const SponsorsManagementPage: React.FC = () => {
                   <div className="sponsor-stats">
                     <div className="sponsor-stat">
                       <div className="sponsor-stat-icon"></div>
-                      {sponsor.eventsSponsored} Events Sponsored
+                      {safeNumber(sponsor.eventsSponsored)} Events Sponsored
                     </div>
                     <div className="sponsor-stat">
                       <div className="sponsor-stat-icon"></div>
-                      {sponsor.chaptersSponsored} Chapters Supported
+                      {safeNumber(sponsor.chaptersSponsored)} Chapters Supported
                     </div>
                   </div>
                   <div className="sponsor-actions">

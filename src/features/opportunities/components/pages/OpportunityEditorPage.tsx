@@ -1,8 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useToast } from '../../contexts/ToastContext';
+import { useToast } from '../../../../contexts/ToastContext';
 import { useParams, useNavigate } from 'react-router-dom';
-import { OpportunitiesService } from '@features/opportunities/services';
-import { useMutationWithRefresh } from '../../hooks/useMutationWithRefresh';
+import { OpportunitiesService } from '@services/opportunitiesService';
+import { useMutationWithRefresh } from '../../../../hooks/useMutationWithRefresh';
 import { LoadingSpinner } from '../../../../components/common/LoadingSpinner';
 import { ErrorMessage } from '../../../../components/common/ErrorMessage';
 import type { Opportunity, OpportunityType, OpportunityStatus } from '../../types';

@@ -14,12 +14,12 @@ import { AdminDashboard } from './components/dashboard/AdminDashboard';
 import { EventsManagementPage } from './components/pages/EventsManagementPage';
 import { EventEditorPage } from './components/pages/EventEditorPage';
 import { EventDetailsPage } from './components/pages/EventDetailsPage';
-import { SponsorsManagementPage } from './components/pages/SponsorsManagementPage';
-import { SponsorEditorPage } from './components/pages/SponsorEditorPage';
-import { SponsorDetailsPage } from './components/pages/SponsorDetailsPage';
-import PartnersManagementPage from './components/pages/PartnersManagementPage';
-import { PartnerEditorPage } from './components/pages/PartnerEditorPage';
-import { PartnerDetailsPage } from './components/pages/PartnerDetailsPage';
+import {
+  SponsorsManagementPage,
+  SponsorEditorPage,
+  SponsorDetailsPage,
+} from '@features/sponsors/components';
+import { PartnersManagementPage, PartnerEditorPage, PartnerDetailsPage } from '@features/partners/components';
 import { ChaptersManagementPage } from './components/pages/ChaptersManagementPage';
 import { ChapterEditorPage } from './components/pages/ChapterEditorPage';
 import { ChapterDetailsPage } from './components/pages/ChapterDetailsPage';

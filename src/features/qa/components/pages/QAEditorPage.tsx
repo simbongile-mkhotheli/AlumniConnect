@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useToast } from '../../contexts/ToastContext';
+import { useToast } from '../../../../contexts/ToastContext';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useApiData } from '../../hooks';
-import { QAService } from '@features/qa/services';
-import { useMutationWithRefresh } from '../../hooks/useMutationWithRefresh';
-import { EditorLayout } from '../layout/EditorLayout';
+import { useApiData } from '../../../../hooks';
+import { QAService } from '@services/qaService';
+import { useMutationWithRefresh } from '../../../../hooks/useMutationWithRefresh';
+import { EditorLayout } from '../../../../components/layout/EditorLayout';
 import { LoadingSpinner } from '../../../../components/common/LoadingSpinner';
+import type { QAItem } from '@features/qa/types';
+import type { ApiResponse } from '@/types';
 
 // Basic domain types
 export type QAType = 'question' | 'answer' | 'discussion';
@@ -63,7 +65,7 @@ export const QAEditorPage: React.FC = () => {
   const [tagInput, setTagInput] = useState('');
 
   // Fetch existing item only in edit mode
-  const { data: qaItemResponse, loading: loadingQAItem, error: qaItemError } = useApiData(
+  const { data: qaItemResponse, loading: loadingQAItem, error: qaItemError } = useApiData<ApiResponse<QAItem> | null>(
     () => (id ? QAService.getQAItem(id) : Promise.resolve(null)),
     [id],
     { enabled: isEditMode, cacheKey: `qa-item-${id}`, cacheDuration: 5 * 60 * 1000 }

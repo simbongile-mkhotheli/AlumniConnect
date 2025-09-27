@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { PartnersService } from '@features/partners/services';
+import { PartnersService } from '@services/partnersService';
 import { LoadingSpinner } from '../../../../components/common/LoadingSpinner';
 import { ErrorMessage } from '../../../../components/common/ErrorMessage';
-import type { Partner } from '../../types';
+import type { Partner } from '@shared/types';
 
 export const PartnerDetailsPage: React.FC = () => {
   const { id } = useParams<{ id: string }>();
@@ -109,6 +109,11 @@ export const PartnerDetailsPage: React.FC = () => {
       default:
         return 'status-unknown';
     }
+  };
+
+  const safeCapitalize = (value?: string | null) => {
+    if (!value || typeof value !== 'string') return 'Unknown';
+    return value.charAt(0).toUpperCase() + value.slice(1);
   };
 
   const getTypeBadgeClass = (type: string) => {
@@ -259,10 +264,9 @@ export const PartnerDetailsPage: React.FC = () => {
             <h2 className="partner-details-title">{partner.name}</h2>
             <div className="partner-details-badges">
               <span
-                className={`status-badge ${getStatusBadgeClass(partner.status)}`}
+                className={`status-badge ${getStatusBadgeClass(partner.status || 'unknown')}`}
               >
-                {partner.status.charAt(0).toUpperCase() +
-                  partner.status.slice(1)}
+                {safeCapitalize(partner.status || 'unknown')}
               </span>
               <span className={`type-badge ${getTypeBadgeClass(partner.type)}`}>
                 {getPartnerIcon(partner.type)}{' '}
@@ -399,9 +403,8 @@ export const PartnerDetailsPage: React.FC = () => {
                       </div>
                       <div className="info-item">
                         <label>Status:</label>
-                        <span className={getStatusBadgeClass(partner.status)}>
-                          {partner.status.charAt(0).toUpperCase() +
-                            partner.status.slice(1)}
+                        <span className={getStatusBadgeClass(partner.status || 'unknown')}>
+                          {safeCapitalize(partner.status || 'unknown')}
                         </span>
                       </div>
                       {partner.website && (
@@ -510,7 +513,7 @@ export const PartnerDetailsPage: React.FC = () => {
                   <div className="partner-tags-section">
                     <h3 className="info-section-title">🏷️ Tags</h3>
                     <div className="partner-tags-display">
-                      {partner.tags.map((tag, index) => (
+                      {partner.tags.map((tag: string, index: number) => (
                         <span key={index} className="partner-tag">
                           {tag}
                         </span>
@@ -625,8 +628,7 @@ export const PartnerDetailsPage: React.FC = () => {
                     </div>
                     <div className="stat-item">
                       <strong>Status:</strong>{' '}
-                      {partner.status.charAt(0).toUpperCase() +
-                        partner.status.slice(1)}
+                      {safeCapitalize(partner.status || 'unknown')}
                     </div>
                   </div>
                   <button

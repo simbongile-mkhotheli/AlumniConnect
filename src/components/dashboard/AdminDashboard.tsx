@@ -1,23 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { KPICards } from './KPICards';
-import { AdminEventsCard } from './AdminEventsCard';
-import { QuickActionsCard } from './QuickActionsCard';
-import { AlumniOutcomeCard } from './AlumniOutcomeCard';
-import { RegionalChaptersCard } from './RegionalChaptersCard';
-import { SponsorManagementCard } from './SponsorManagementCard';
-import { PartnersCard } from './PartnersCard';
-import { MentorshipCard } from './MentorshipCard';
-import { CommunityHealthCard } from './CommunityHealthCard';
-import { PlatformStatusCard } from './PlatformStatusCard';
-import { AlumniSpotlightCard } from './AlumniSpotlightCard';
-import { OpportunityBoardCard } from './OpportunityBoardCard';
-import { CommunityQACard } from './CommunityQACard';
 import { UpcomingEventsModal } from '../modals/UpcomingEventsModal';
 import { MentorshipModal } from '../modals/MentorshipModal';
 import { LoadingSpinner, LoadingOverlay } from '../common/LoadingSpinner';
 import { ErrorMessage } from '../common/ErrorMessage';
 import { useModal } from '../../hooks';
+// import { EnhancedAdminHeader } from './EnhancedAdminHeader';
+// import { AIInsightsPanel } from './AIInsightsPanel';
+// import { LiveActivityFeed } from './LiveActivityFeed';
+import { useAuth } from '../../contexts/UserContext';
+import '../../styles/enhanced-admin-dashboard.css';
 
 interface DashboardStats {
   totalAlumni: number;
@@ -204,353 +196,193 @@ export function AdminDashboard() {
     );
   }
 
+  const { user } = useAuth() as any;
+
   return (
-    <div className="admin-dashboard">
-      {/* Enhanced Header with Stats and Refresh */}
-      <div
-        className="presentation-note"
-        style={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          flexWrap: 'wrap',
-          gap: '16px',
-        }}
-      >
-        <div>
-          <strong>AlumniConnect Admin Dashboard:</strong> This comprehensive
-          admin interface manages all aspects of the AlumniConnect platform,
-          from events and sponsorships to mentorship programs and community
-          engagement. Built with React for optimal performance and
-          maintainability.
-          {dashboardStats && (
-            <div
-              style={{
-                fontSize: '12px',
-                color: '#718096',
-                marginTop: '8px',
-              }}
-            >
-              Last updated: {dashboardStats.lastUpdated}
-            </div>
-          )}
-        </div>
-        <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
-          <button
-            className="btn btn-secondary"
-            onClick={handleRefresh}
-            disabled={refreshing}
-            style={{
-              padding: '8px 16px',
-              fontSize: '14px',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-            }}
-          >
-            {refreshing ? (
-              <>
-                <LoadingSpinner size="small" />
-                Refreshing...
-              </>
-            ) : (
-              <>
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                >
-                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8" />
-                  <path d="M21 3v5h-5" />
-                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16" />
-                  <path d="M3 21v-5h5" />
-                </svg>
-                Refresh
-              </>
-            )}
-          </button>
-          <div
-            style={{
-              padding: '8px 12px',
-              background: 'rgba(102, 126, 234, 0.1)',
-              borderRadius: '8px',
-              fontSize: '12px',
-              color: '#667eea',
-              fontWeight: '500',
-            }}
-          >
-            🟢 System Healthy
-          </div>
-        </div>
-      </div>
-
-      {/* KPI Cards with Loading Overlay */}
-      <LoadingOverlay isLoading={refreshing}>
-        <KPICards />
-      </LoadingOverlay>
-
-      {/* Main Content Grid */}
-      <div className="admin-content-grid">
-        {/* Left Column */}
-        <div className="left-column">
-          <LoadingOverlay isLoading={refreshing}>
-            <AdminEventsCard
-              onEditEvent={handleEditEvent}
-              onViewEvent={handleViewEvent}
-              onManageEvents={handleManageEvents}
-              onCreateEvent={handleCreateEvent}
-            />
-          </LoadingOverlay>
-
-          <LoadingOverlay isLoading={refreshing}>
-            <AlumniOutcomeCard />
-          </LoadingOverlay>
-
-          <LoadingOverlay isLoading={refreshing}>
-            <RegionalChaptersCard onCreateChapter={handleCreateChapter} />
-          </LoadingOverlay>
-        </div>
-
-        {/* Right Column */}
-        <div className="right-column">
-          <QuickActionsCard />
-
-          <LoadingOverlay isLoading={refreshing}>
-            <SponsorManagementCard onCreateSponsor={handleCreateSponsor} />
-          </LoadingOverlay>
-
-          <LoadingOverlay isLoading={refreshing}>
-            <CommunityHealthCard />
-          </LoadingOverlay>
-
-          <LoadingOverlay isLoading={refreshing}>
-            <PlatformStatusCard />
-          </LoadingOverlay>
-        </div>
-      </div>
-
-      {/* Additional Cards Row 1 */}
-      <div className="admin-content-grid" style={{ paddingTop: 0 }}>
-        {/* Left Column */}
-        <div className="left-column">
-          <LoadingOverlay isLoading={refreshing}>
-            <AlumniSpotlightCard onCreateSpotlight={handleCreateSpotlight} />
-          </LoadingOverlay>
-
-          <LoadingOverlay isLoading={refreshing}>
-            <OpportunityBoardCard
-              onCreateOpportunity={handleCreateOpportunity}
-            />
-          </LoadingOverlay>
-        </div>
-
-        {/* Right Column */}
-        <div className="right-column">
-          <LoadingOverlay isLoading={refreshing}>
-            <CommunityQACard onCreateQA={handleCreateQA} />
-          </LoadingOverlay>
-
-          <LoadingOverlay isLoading={refreshing}>
-            <PartnersCard onCreatePartner={handleCreatePartner} />
-          </LoadingOverlay>
-        </div>
-      </div>
-
-      {/* Additional Cards Row 2 */}
-      <div className="admin-content-grid" style={{ paddingTop: 0 }}>
-        {/* Left Column */}
-        <div className="left-column">
-          <LoadingOverlay isLoading={refreshing}>
-            <MentorshipCard 
-              onCreateMentorship={handleCreateMentorship} 
-              onManageMentorships={handleManageMentorships}
-            />
-          </LoadingOverlay>
-        </div>
-
-        {/* Right Column */}
-        <div className="right-column">{/* Empty space for future cards */}</div>
-      </div>
-
-      {/* Enhanced Key Features Summary */}
-      <div
-        className="presentation-note"
-        style={{
-          marginTop: '32px',
-          background: 'linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%)',
-          border: '1px solid #cbd5e1',
-        }}
-      >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'flex-start',
-            marginBottom: '16px',
-          }}
-        >
-          <strong>Key AlumniConnect Admin Features:</strong>
-          <div
-            style={{
-              display: 'flex',
-              gap: '8px',
-              fontSize: '12px',
-            }}
-          >
-            <span
-              style={{
-                padding: '4px 8px',
-                background: '#c6f6d5',
-                color: '#22543d',
-                borderRadius: '6px',
-                fontWeight: '500',
-              }}
-            >
-              ✅ All Systems Operational
-            </span>
-            <span
-              style={{
-                padding: '4px 8px',
-                background: '#bee3f8',
-                color: '#2a4365',
-                borderRadius: '6px',
-                fontWeight: '500',
-              }}
-            >
-              📊 Real-time Data
-            </span>
-          </div>
-        </div>
-
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-            gap: '16px',
-            margin: '16px 0',
-          }}
-        >
-          <div>
-            <ul style={{ margin: '0', paddingLeft: '20px' }}>
-              <li>
-                <strong>Admin Events Management:</strong> Create, edit, and
-                manage events with RSVP tracking
-              </li>
-              <li>
-                <strong>Sponsor Management:</strong> Manage sponsor
-                relationships, tiers, and contributions
-              </li>
-              <li>
-                <strong>Partner Management:</strong> Oversee technology and
-                education partnerships
-              </li>
-              <li>
-                <strong>Alumni Outcome Tracking:</strong> Monitor career
-                progression and success metrics
-              </li>
-              <li>
-                <strong>Community Health Monitoring:</strong> Track engagement,
-                retention, and platform activity
-              </li>
-            </ul>
-          </div>
-          <div>
-            <ul style={{ margin: '0', paddingLeft: '20px' }}>
-              <li>
-                <strong>RSVP & Offline Sync Management:</strong> Handle
-                online/offline event participation
-              </li>
-              <li>
-                <strong>Regional Chapter Analytics:</strong> Oversee local
-                alumni communities and their performance
-              </li>
-              <li>
-                <strong>Spotlight Content Management:</strong> Curate and
-                publish alumni success stories
-              </li>
-              <li>
-                <strong>Mentorship Program Management:</strong> Coordinate
-                mentor-mentee relationships and programs
-              </li>
-              <li>
-                <strong>Community Q&A Management:</strong> Moderate and manage
-                community discussions
-              </li>
-              <li>
-                <strong>Opportunity Board Management:</strong> Oversee job
-                postings and collaboration opportunities
-              </li>
-            </ul>
-          </div>
-        </div>
-
-        {/* Quick Stats Footer */}
-        {dashboardStats && (
-          <div
-            style={{
-              display: 'flex',
-              justifyContent: 'space-around',
-              marginTop: '20px',
-              paddingTop: '16px',
-              borderTop: '1px solid #e2e8f0',
-              fontSize: '12px',
-              color: '#4a5568',
-            }}
-          >
-            <div style={{ textAlign: 'center' }}>
-              <div
-                style={{
-                  fontWeight: '600',
-                  fontSize: '16px',
-                  color: '#2d3748',
-                }}
-              >
-                {dashboardStats.totalAlumni.toLocaleString()}
+    <div className="admin-dashboard enhanced">
+      {/* Enhanced Admin Header - Inline Version */}
+      <div className="enhanced-admin-header">
+        <div className="admin-header-content">
+          <div className="admin-profile-section">
+            <div className="admin-avatar-container">
+              <div className="avatar-placeholder">
+                {user?.name?.charAt(0) || 'A'}
               </div>
-              <div>Total Alumni</div>
+              <div className="status-indicator online"></div>
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div
-                style={{
-                  fontWeight: '600',
-                  fontSize: '16px',
-                  color: '#2d3748',
-                }}
-              >
-                {dashboardStats.activeEvents}
-              </div>
-              <div>Active Events</div>
+            
+            <div className="admin-info">
+              <h1 className="admin-welcome">
+                Welcome back, <span className="admin-name">{user?.name || 'Administrator'}</span>
+              </h1>
+              <p className="admin-subtitle">
+                <span className="role-badge">System Administrator</span>
+                <span className="separator">•</span>
+                <span className="last-login">Last login: 2h ago</span>
+              </p>
             </div>
-            <div style={{ textAlign: 'center' }}>
-              <div
-                style={{
-                  fontWeight: '600',
-                  fontSize: '16px',
-                  color: '#2d3748',
-                }}
+
+            <div className="admin-quick-actions">
+              <button 
+                className="btn-gradient primary"
+                onClick={() => navigate('/admin/profile')}
               >
-                {dashboardStats.totalSponsors}
-              </div>
-              <div>Active Sponsors</div>
-            </div>
-            <div style={{ textAlign: 'center' }}>
-              <div
-                style={{
-                  fontWeight: '600',
-                  fontSize: '16px',
-                  color: '#2d3748',
-                }}
+                <span className="btn-icon">👤</span>
+                View Profile
+              </button>
+              <button 
+                className="btn-outline secondary"
+                onClick={() => navigate('/admin/settings')}
               >
-                {dashboardStats.regionalChapters}
-              </div>
-              <div>Regional Chapters</div>
+                <span className="btn-icon">⚙️</span>
+                Settings
+              </button>
             </div>
           </div>
-        )}
+
+          <div className="system-status-section">
+            <div className="status-grid">
+              <div className="status-item primary">
+                <div className="status-icon">🟢</div>
+                <div className="status-content">
+                  <div className="status-label">System Status</div>
+                  <div className="status-value">All Systems Operational</div>
+                </div>
+              </div>
+              
+              <div className="status-item">
+                <div className="status-icon">👥</div>
+                <div className="status-content">
+                  <div className="status-label">Active Users</div>
+                  <div className="status-value">247</div>
+                </div>
+              </div>
+              
+              <div className="status-item">
+                <div className="status-icon">🔄</div>
+                <div className="status-content">
+                  <div className="status-label">Last Updated</div>
+                  <div className="status-value">2m ago</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="performance-banner">
+          <div className="banner-content">
+            <div className="banner-stats">
+              <div className="stat">
+                <span className="stat-value">2,847</span>
+                <span className="stat-label">Total Alumni</span>
+              </div>
+              <div className="stat">
+                <span className="stat-value">15</span>
+                <span className="stat-label">Active Chapters</span>
+              </div>
+              <div className="stat">
+                <span className="stat-value">8</span>
+                <span className="stat-label">Upcoming Events</span>
+              </div>
+              <div className="stat">
+                <span className="stat-value">94%</span>
+                <span className="stat-label">Satisfaction Rate</span>
+              </div>
+            </div>
+            <div className="banner-actions">
+              <button className="banner-btn" onClick={() => navigate('/admin/analytics')}>
+                📊 View Analytics
+              </button>
+              <button className="banner-btn" onClick={() => navigate('/admin/reports')}>
+                📈 Generate Report
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
+
+      {/* Legacy presentation note removed */}
+
+      {/* KPICards removed */}
+
+      {/* AI Insights Panel - Inline Version */}
+      <div className="ai-insights-panel">
+        <div className="panel-header">
+          <div className="header-content">
+            <h3 className="panel-title">
+              <span className="title-icon">🤖</span>
+              AI Insights & Recommendations
+            </h3>
+            <div className="panel-badges">
+              <span className="live-badge">
+                <span className="pulse-dot"></span>
+                Live Analysis
+              </span>
+              <span className="insights-count">4 insights</span>
+            </div>
+          </div>
+        </div>
+
+        <div className="insights-container">
+          <div className="insights-grid">
+            <div className="insight-card priority-urgent">
+              <div className="insight-header">
+                <div className="insight-icon">⚠️</div>
+                <div className="insight-meta">
+                  <h4 className="insight-title">High-Value Alumni Engagement Drop</h4>
+                  <span className="priority-badge urgent">urgent</span>
+                </div>
+              </div>
+              <p className="insight-description">
+                23 high-impact alumni haven't engaged in 30+ days. Their combined network value is R2.3M.
+              </p>
+              <div className="insight-actions">
+                <button className="insight-action-btn primary">Create Campaign</button>
+                <button className="insight-action-btn secondary">Dismiss</button>
+              </div>
+            </div>
+
+            <div className="insight-card priority-high">
+              <div className="insight-header">
+                <div className="insight-icon">🤝</div>
+                <div className="insight-meta">
+                  <h4 className="insight-title">Mentorship Matching Opportunity</h4>
+                  <span className="priority-badge high">high</span>
+                </div>
+              </div>
+              <p className="insight-description">
+                15 mentees are waiting for matches in Tech fields. We have 8 available senior mentors.
+              </p>
+              <div className="insight-actions">
+                <button className="insight-action-btn primary">Auto-Match Now</button>
+                <button className="insight-action-btn secondary">Review</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="ai-summary">
+          <div className="summary-content">
+            <div className="summary-icon">🎯</div>
+            <div className="summary-text">
+              <strong>AI Analysis:</strong> Your platform shows strong growth potential. 
+              Focus on alumni re-engagement and mentorship matching to maximize ROI.
+            </div>
+          </div>
+          <div className="summary-metrics">
+            <div className="metric">
+              <span className="metric-value">87%</span>
+              <span className="metric-label">Accuracy</span>
+            </div>
+            <div className="metric">
+              <span className="metric-value">4.2x</span>
+              <span className="metric-label">ROI Impact</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Main content section removed */}
 
       {/* Modals - UpcomingEventsModal */}
       <UpcomingEventsModal

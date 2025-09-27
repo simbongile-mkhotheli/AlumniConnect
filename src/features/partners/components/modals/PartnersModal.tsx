@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react';
-import { useFilters, useBulkActions, useFilteredData } from '../../hooks';
-import { formatDate, getStatusBadgeClass } from '../../utils';
+import { useFilters, useBulkActions, useFilteredData } from '../../../../hooks';
+import { formatDate, getStatusBadgeClass } from '../../../../utils';
 
 interface Partner {
   id: string;
