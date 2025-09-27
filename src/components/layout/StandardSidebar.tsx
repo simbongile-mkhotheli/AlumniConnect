@@ -89,6 +89,18 @@ export function StandardSidebar() {
             </Link>
           </li>
 
+          {/* CSS Modules Demo Link */}
+          <li className="nav-item">
+            <Link
+              to="/dashboard/css-demo"
+              className={`nav-link ${isActive('/dashboard/css-demo') ? 'active' : ''}`}
+              style={{ color: '#059669', fontWeight: '500' }}
+            >
+              <div className="nav-icon"></div>
+              🎨 CSS Demo
+            </Link>
+          </li>
+
           {/* Admin Dashboard Link */}
           <li
             className="nav-item"

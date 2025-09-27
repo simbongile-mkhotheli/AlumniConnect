@@ -47,6 +47,7 @@ import { AlumniSpotlightsPage } from './components/pages/AlumniSpotlightsPage';
 import { RegionalChaptersPage } from './components/pages/RegionalChaptersPage';
 import { OpportunityBoardPage } from './components/pages/OpportunityBoardPage';
 import { MyProfilePage } from './components/pages/MyProfilePage';
+import { CSSModulesDemo } from './components/common/CSSModulesDemo';
 
 // Import CSS files
 import './styles/admin-dashboard.css';
@@ -115,6 +116,10 @@ function App() {
                 <Route
                   path="profile"
                   element={<MyProfilePage />}
+                />
+                <Route
+                  path="css-demo"
+                  element={<CSSModulesDemo />}
                 />
                 <Route
                   path="help"
